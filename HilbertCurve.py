@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 from copy import deepcopy
 from functools import cache
 from typing import Iterable, Optional
@@ -6,6 +7,10 @@ from typing import Iterable, Optional
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--max-order", metavar="N", type=int, default=8, help="max curve order to generate")
+
 
 base_curve = np.array(
     [
@@ -231,9 +236,12 @@ def make_segments(points: np.ndarray) -> np.ndarray:
 
 
 if __name__ == "__main__":
+    # Read and parse command line arguments
+    args = parser.parse_args()
+
     fig, ax = plt.subplots(figsize=(16, 10))
 
-    for order in range(1, 9):
+    for order in range(1, args.max_order + 1):
         curve = hilbert_curve(order=order)
         plot_curve(curve=curve, order=order, show_axes=False, ax=ax)
 
