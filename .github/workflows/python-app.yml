@@ -25,4 +25,4 @@ jobs:
         black --check . --config ./pyproject.toml
     - name: Run type checking
       run: |
-        mypy . --config ./mypy.ini
+        mypy . --config-file ./mypy.ini
