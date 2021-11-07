@@ -4,9 +4,9 @@ from copy import deepcopy
 from functools import cache
 from typing import Iterable, Optional
 
-import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--max-order", metavar="N", type=int, default=8, help="max curve order to generate")
@@ -239,11 +239,13 @@ if __name__ == "__main__":
     # Read and parse command line arguments
     args = parser.parse_args()
 
+    # Create new figure
     fig, ax = plt.subplots(figsize=(16, 10))
 
+    # Generate each order of a Hilbert Curve and plot it
     for order in range(1, args.max_order + 1):
         curve = hilbert_curve(order=order)
         plot_curve(curve=curve, order=order, show_axes=False, ax=ax)
 
-        input("Press any key to generate the next order curve...")
+        input("Press Enter to generate the next order curve...")
         ax.clear()
