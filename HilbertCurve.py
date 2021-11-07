@@ -10,6 +10,8 @@ import numpy as np
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--max-order", metavar="N", type=int, default=8, help="max curve order to generate. Default: 8")
+parser.add_argument("--show-grid", action="store_true", help="show the underlying grid. Default: don't show")
+parser.add_argument("--show-axes", action="store_true", help="show the axes of the plot. Default: don't show")
 
 
 base_curve = np.array(
@@ -133,14 +135,21 @@ def hilbert_curve(order: int = 1) -> np.ndarray:
         return curve
 
 
-def plot_curve(curve: np.ndarray, order: int, show_axes: bool = False, ax: Optional[mpl.axes.Axes] = None) -> None:
+def plot_curve(
+    curve: np.ndarray,
+    order: int,
+    ax: Optional[mpl.axes.Axes] = None,
+    show_grid: bool = False,
+    show_axes: bool = False,
+) -> None:
     """Plot a Hilbert Curve, specified by `curve`, of order `order`.
 
     Args:
         curve (np.ndarray): A (2, N) array of coordinates that specifies the `order` order Hilbert Curve.
         order (int): The order of the Hilbert Curve to plot. Used to calculate grid size.
-        show_axes (bool): If False, will not show the x and y axes.
         ax (Optional[mpl.axes.Axes]): The axes to plot the curve onto. If None, will create new axes.
+        show_grid (bool): If True, will plot horizontal and vertical lines to show the underlying grid.
+        show_axes (bool): If False, will not show the x and y axes.
 
     Returns:
         None: Plots curve to `ax`.
@@ -151,9 +160,10 @@ def plot_curve(curve: np.ndarray, order: int, show_axes: bool = False, ax: Optio
     if ax is None:
         fig, ax = plt.subplots()
 
-    # Divide the grid into segments
-    ax.hlines(np.arange(0, grid_size + 1), xmin=0, xmax=grid_size, colors="k", linewidths=0.5)
-    ax.vlines(np.arange(0, grid_size + 1), ymin=0, ymax=grid_size, colors="k", linewidths=0.5)
+    if show_grid:
+        # Divide the grid into segments
+        ax.hlines(np.arange(0, grid_size + 1), xmin=0, xmax=grid_size, colors="k", linewidths=0.5)
+        ax.vlines(np.arange(0, grid_size + 1), ymin=0, ymax=grid_size, colors="k", linewidths=0.5)
 
     # Plot the curve
     colorline(curve, ax=ax)
@@ -245,7 +255,7 @@ if __name__ == "__main__":
     # Generate each order of a Hilbert Curve and plot it
     for order in range(1, args.max_order + 1):
         curve = hilbert_curve(order=order)
-        plot_curve(curve=curve, order=order, show_axes=False, ax=ax)
+        plot_curve(curve=curve, order=order, ax=ax, show_grid=args.show_grid, show_axes=args.show_axes)
 
         input("Press Enter to generate the next order curve...")
         ax.clear()
