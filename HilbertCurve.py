@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--max-order", metavar="N", type=int, default=8, help="max curve order to generate")
+parser.add_argument("--max-order", metavar="N", type=int, default=8, help="max curve order to generate. Default: 8")
 
 
 base_curve = np.array(
